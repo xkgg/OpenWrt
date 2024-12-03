@@ -24,11 +24,11 @@
 
 name: Build OpenWrt
 on:
-#  schedule:
-#    - cron: '0 4 * * *'
-#  push:
-#    branches:
-#      - main
+  schedule:
+    - cron: '0 4 * * *'
+  push:
+    branches:
+      - main
 #    paths:
 #      - '.github/**'
 #      - 'files/**'
