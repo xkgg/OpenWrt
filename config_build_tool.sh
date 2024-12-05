@@ -331,7 +331,7 @@ function import_ext_packages_config() {
         return 11
     fi
     if [ $OPTION = 1 ]; then
-        DOWNLOAD_URL=https://raw.githubusercontent.com/zijieKwok/OpenWrt/main/config/default-extpackages.config
+        DOWNLOAD_URL=https://raw.githubusercontent.com/xkgg/OpenWrt/main/config/default-extpackages.config
     elif [ $OPTION = 2 ]; then
         # 从配置文件buildconfig.config中提取OpenWrt-K仓库的URL
         OpenWrt_K_url=$(grep "^OpenWrt_K_url=" buildconfig.config|sed  "s/OpenWrt_K_url=//")
