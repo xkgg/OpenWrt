@@ -61,8 +61,9 @@ show_info() {
         echo "固件编译时间：UTC+8 "$(sed -n  "/^COMPILE_START_TIME=\"/p" /etc/openwrt-k_info | sed -e "s/COMPILE_START_TIME=\"//g" -e "s/\"/时/g" -e "s/-/日/" -e "s/\./月/g" -e "s/月/年/" )
         echo "固件发布名称："$(sed -n  "/^RELEASE_NAME=\"/p" /etc/openwrt-k_info | sed -e "s/RELEASE_NAME=\"//g" -e "s/\"//g" )
         echo "固件标签名称："$(sed -n  "/RELEASE_TAG_NAME=\"/p" /etc/openwrt-k_info | sed -e "s/RELEASE_TAG_NAME=\"//g" -e "s/\"//g" )
-    elif [ "$(grep -c "Compiled by" /etc/openwrt_release)" -ne '0' ];then
-        echo "固件编译者："$(sed -n  "/Compiled by /p" /etc/openwrt_release|sed -e "s/.*Compiled by //g" -e "s/'//g" )
+    #以下openwrt_release 文件修改编译者信息 我给去掉了
+    #elif [ "$(grep -c "Compiled by" /etc/openwrt_release)" -ne '0' ];then
+    #    echo "固件编译者："$(sed -n  "/Compiled by /p" /etc/openwrt_release|sed -e "s/.*Compiled by //g" -e "s/'//g" )
     fi
 }
 
