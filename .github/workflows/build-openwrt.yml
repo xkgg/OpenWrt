@@ -348,8 +348,8 @@ jobs:
           sed -i 's/services/system/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
           ##修改samba4到NAS菜单
           sed -i 's/services/nas/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-samba4/root/usr/share/luci/menu.d/luci-app-samba4.json
-          ##修改upnp到NAS菜单
-          sed -i 's/services/nas/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-upnp/root/usr/share/luci/menu.d/luci-app-upnp.json
+          ##修改linkease到NAS菜单
+          #sed -i 's/services/nas/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-linkease/root/usr/share/luci/menu.d/luci-app-linkease.json
           ##修改硬盘休眠到NAS菜单
           sed -i 's/services/nas/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-hd-idle/root/usr/share/luci/menu.d/luci-app-hd-idle.json
           ##修改迷你DLNA到NAS菜单
