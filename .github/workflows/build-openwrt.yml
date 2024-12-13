@@ -99,7 +99,7 @@ jobs:
 
       - name: 克隆补丁所需源代码
         run: |
-          git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede $DOWNLOAD_ROOT_PATH/patch/lede
+          #git clone --depth=1 --single-branch https://github.com/coolsnowwolf/lede $DOWNLOAD_ROOT_PATH/patch/lede
           git clone --depth=1 --single-branch https://github.com/immortalwrt/packages $DOWNLOAD_ROOT_PATH/patch/immortalwrt-packages
           git clone --depth=1 --single-branch https://github.com/chenmozhijin/turboacc -b package $DOWNLOAD_ROOT_PATH/patch/turboacc
           git clone https://git.openwrt.org/openwrt/openwrt.git $DOWNLOAD_ROOT_PATH/openwrt
