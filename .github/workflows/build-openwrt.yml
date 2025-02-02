@@ -63,7 +63,7 @@ jobs:
         echo "::notice ::编译开始时间为：$starttime"
 
     - name: 将存储库签出到运行器
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 规划编译流程
       id: planning
@@ -82,7 +82,7 @@ jobs:
           sudo apt install -y curl git rsync unzip wget sed tar || sudo apt install -y curl git rsync unzip wget sed tar
 
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 建立工作文件夹
         run: |
@@ -246,7 +246,7 @@ jobs:
     name: build1-${{ matrix.config }}
     steps:
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 输出运行器硬件信息
         run: |
@@ -261,7 +261,7 @@ jobs:
           bash $GITHUB_WORKSPACE/scripts/merge_disk.sh
 
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 建立工作文件夹
         run: |
@@ -803,7 +803,7 @@ jobs:
     name: build-package-${{ matrix.config }}
     steps:
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 输出运行器硬件信息
         run: |
@@ -908,7 +908,7 @@ jobs:
     name: build-Image_Builder-${{ matrix.config }}
     steps:
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 输出运行器硬件信息
         run: |
@@ -1093,7 +1093,7 @@ jobs:
     name: build-Image-${{ matrix.config }}
     steps:
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 输出运行器硬件信息
         run: |
@@ -1112,7 +1112,7 @@ jobs:
           bash $GITHUB_WORKSPACE/scripts/merge_disk.sh
 
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 下载Image Builder
         uses: actions/download-artifact@v3
@@ -1234,7 +1234,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: 将存储库签出到运行器
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 建立工作文件夹
         run: |
