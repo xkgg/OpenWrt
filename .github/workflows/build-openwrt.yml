@@ -334,7 +334,7 @@ jobs:
           ##设置密码为password
           sed -i 's/root:::0:99999:7:::/root:$1$V4UetPzk$CYXluq4wUazHjmCDBCqXF.:0:0:99999:7:::/' $OPENWRT_ROOT_PATH/package/base-files/files/etc/shadow
           ##修改默认wifi名称ssid为AreyouOK
-          sed -i 's/ssid=OpenWrt/ssid=AreyouOK/g' $OPENWRT_ROOT_PATH/package/kernel/mac80211/files/lib/wifi/mac80211.sh
+          ＃sed -i 's/ssid=OpenWrt/ssid=AreyouOK/g' $OPENWRT_ROOT_PATH/package/kernel/mac80211/files/lib/wifi/mac80211.sh
           ##删除banner替换
           #rm -rf $OPENWRT_ROOT_PATH/package/base-files/files/etc/banner
           #cp -rf $GITHUB_WORKSPACE/file/banner $OPENWRT_ROOT_PATH/package/base-files/files/etc/
