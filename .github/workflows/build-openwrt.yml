@@ -1166,7 +1166,7 @@ jobs:
       - name: 初始化环境
         run: |
           sudo -E apt update
-          sudo -E apt install -y git aria2 zip bzip2 curl rsync unzip wget || sudo -E apt install -y git aria2 zip bzip2 curl rsync unzip wget
+          sudo -E apt install -y git aria2 zip bzip2 curl rsync unzip wget python3 python3-distutils || sudo -E apt install -y git aria2 zip bzip2 curl rsync unzip wget python3 python3-distutils
           sudo timedatectl set-timezone "Asia/Shanghai"
 
       - name: 生成 release 所需变量
