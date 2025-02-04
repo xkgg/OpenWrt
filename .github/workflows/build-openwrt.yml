@@ -404,24 +404,11 @@ jobs:
       - name: 加载自定义配置并生成配置文件
         working-directory: ${{ env.OPENWRT_ROOT_PATH }}
         run: |
-          cat $GITHUB_WORKSPACE/config/${{ matrix.config }}/{target,luci,network,other,kmod,image}.config >> $OPENWRT_ROOT_PATH/.config
+          cat $GITHUB_WORKSPACE/config/${{ matrix.config }}/{target,luci,utilities,network,other,kmod,image}.config >> $OPENWRT_ROOT_PATH/.config
           make defconfig
           ./scripts/diffconfig.sh
           ./scripts/diffconfig.sh >> $LOG_PATH/build1-diffconfig.log
 
-      - name: 为openwrt-22.03/v22.03.*升级dnsmasq与libubox
-        working-directory: ${{ env.OPENWRT_ROOT_PATH }}
-        run: |
-          openwrt_tag_branch=$(sed -n '/openwrt_tag\/branch/p' $GITHUB_WORKSPACE/config/${{ matrix.config }}/OpenWrt-K/compile.config | sed -e 's/.*=//')
-          if [ "$openwrt_tag_branch" = "openwrt-22.03" ] || [[ "$openwrt_tag_branch" =~ ^v22.03.* ]] ; then
-            echo "::notice ::检测到openwrt-22.03分支/v22.03.*版本升级dnsmasq与libubox"
-            rm -rf $OPENWRT_ROOT_PATH/package/{network/services/dnsmasq,libs/libubox}
-            mkdir -p $OPENWRT_ROOT_PATH/package/{network/services/dnsmasq,libs/libubox}
-            cp -RT $CMZJ_PATCH_ROOT_PATH/libubox $OPENWRT_ROOT_PATH/package/libs/libubox
-            cp -RT $CMZJ_PATCH_ROOT_PATH/dnsmasq $OPENWRT_ROOT_PATH/package/network/services/dnsmasq
-          else
-            echo "::notice ::检测到非openwrt-22.03分支/v22.03.*版本,跳过升级dnsmasq与libubox。"
-          fi
 
       - name: 检查软件包依赖
         working-directory: ${{ env.OPENWRT_ROOT_PATH }}
