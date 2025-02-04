@@ -79,7 +79,7 @@ jobs:
       - name: 准备环境
         run: |
           sudo -E apt update
-          sudo apt install -y curl git rsync unzip wget sed tar || sudo apt install -y curl git rsync unzip wget sed tar
+          sudo apt install -y curl git rsync unzip wget sed tar python3 python3-distutils || sudo apt install -y curl git rsync unzip wget sed tar python3 python3-distutils
 
       - name: 将存储库签出到运行器
         uses: actions/checkout@v4
