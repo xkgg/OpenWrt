@@ -239,7 +239,7 @@ jobs:
           path: cmzj_patch.tgz
 
   build1:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: [planning,prepare]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
@@ -714,7 +714,7 @@ jobs:
           path: "${{ env.LOG_PATH }}"
 
   build-package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [planning,prepare,build1]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
@@ -819,7 +819,7 @@ jobs:
           path: "${{ env.LOG_PATH }}"
 
   build-Image_Builder:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [planning,prepare,build1]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
@@ -1004,7 +1004,7 @@ jobs:
           path: "${{ env.LOG_PATH }}"
 
   build-Image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:  [planning,prepare,build1,build-package,build-Image_Builder]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
