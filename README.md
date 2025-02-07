@@ -91,6 +91,8 @@
 ## 感谢
 
  感谢以下项目与各位制作软件包大佬的付出
+ 
++ [郭子杰](https://github.com/zijieKwok/OpenWrt) 
 + [沉默の金](https://github.com/chenmozhijin/OpenWrt-K)
 + [iStoreOS官网](https://github.com/istoreos/istoreos)
 + [OpenWrt官网](https://github.com/openwrt/openwrt/)
