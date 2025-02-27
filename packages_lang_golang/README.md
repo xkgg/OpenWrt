@@ -10,4 +10,4 @@ git clone https://github.com/sbwml/packages_lang_golang -b 23.x feeds/packages/l
 
  
 
- This site was built using [GitHub Pages](https://github.com/sbwml/packages_lang_golang).
+ 原地址 [GitHub ](https://github.com/sbwml/packages_lang_golang).
