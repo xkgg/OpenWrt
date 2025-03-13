@@ -1061,7 +1061,7 @@ jobs:
       - name: 解压
         run: |
 
-          zstd -d openwrt-imagebuilder-${{ matrix.target }}-${{ matrix.subtarget }}.Linux-x86_64.tar.zst | tar -xvf -
+          zstd -d openwrt-imagebuilder-${{ matrix.target }}-${{ matrix.subtarget }}.Linux-x86_64.tar.zst
           cd openwrt-imagebuilder-${{ matrix.target }}-${{ matrix.subtarget }}.Linux-x86_64
           export IMAGE_BUILDER_ROOT_PATH="$(pwd)"
           echo "IMAGE_BUILDER_ROOT_PATH=$IMAGE_BUILDER_ROOT_PATH" >> $GITHUB_ENV
