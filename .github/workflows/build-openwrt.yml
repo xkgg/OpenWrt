@@ -51,7 +51,7 @@ jobs:
     outputs:
       matrix: ${{ steps.planning.outputs.matrix }}
       starttime: ${{ steps.time.outputs.starttime }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
     - name: 记录开始时间
       id: time
