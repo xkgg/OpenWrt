@@ -8,7 +8,7 @@ libncurses5-dev libssl-dev xz-utils liblzma-dev \
 python3-pip python3-setuptools ccache git-lfs lrzsz \
 upx-ucl squashfs-tools device-tree-compiler \
 genisoimage e2fsprogs msmtp haveged libc6
-
+sudo apt-get upgrade libc6
 sudo -E systemctl daemon-reload 
 sudo -E apt -y autoremove --purge
 sudo -E apt clean
