@@ -711,7 +711,7 @@ jobs:
           path: "${{ env.LOG_PATH }}"
 
   build-package:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [planning,prepare,build1]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
