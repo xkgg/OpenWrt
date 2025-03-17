@@ -733,7 +733,7 @@ jobs:
           bash $GITHUB_WORKSPACE/scripts/install_compilation_dependencies.sh
           # 升级系统 GNU libc 至 2.38+
           sudo apt update
-          sudo apt install -y libc6-dev libc6=2.38-0ubuntu1
+          sudo apt install -y libc6-dev
 
       - name: 合并磁盘
         run: |
