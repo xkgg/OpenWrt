@@ -1022,7 +1022,7 @@ jobs:
       - name: 安装编译依赖
         run: |
           bash $GITHUB_WORKSPACE/scripts/install_compilation_dependencies.sh
-          sudo apt install qemu-utils mkisofs
+          #sudo apt install qemu-utils mkisofs
 
       - name: 合并磁盘
         run: |
