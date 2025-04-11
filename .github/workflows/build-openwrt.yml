@@ -1002,7 +1002,7 @@ jobs:
           path: "${{ env.LOG_PATH }}"
 
   build-Image:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs:  [planning,prepare,build1,build-package,build-Image_Builder]
     strategy:
       matrix: ${{ fromJSON(needs.planning.outputs.matrix) }}
@@ -1021,17 +1021,7 @@ jobs:
 
       - name: 安装编译依赖
         run: |
-          sudo apt update && sudo apt upgrade -y
-          sudo dpkg --add-architecture i386
-          sudo apt update
-          sudo apt install build-essential clang flex bison g++ gawk \
-          gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
-          python3-setuptools rsync swig unzip zlib1g-dev file wget
-          sudo apt install -y build-essential clang gcc-multilib g++-multilib gettext
-          sudo apt-get install genisoimage -y
-          sudo -E apt clean
-          sudo timedatectl set-timezone "Asia/Shanghai"
-         
+          bash $GITHUB_WORKSPACE/scripts/install_compilation_dependencies.sh
 
       - name: 合并磁盘
         run: |
