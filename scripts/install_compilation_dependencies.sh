@@ -8,7 +8,7 @@ libncurses5-dev libssl-dev xz-utils liblzma-dev \
 python3-pip python3-setuptools ccache git-lfs lrzsz \
 upx-ucl squashfs-tools device-tree-compiler \
 genisoimage e2fsprogs msmtp haveged \ 
-libc6-dev libc6=2.38-0ubuntu1 mkisofs
+libc6-dev libc6=2.38-0ubuntu1 mkisofs qemu-utils
 
 sudo apt-get upgrade libc6
 sudo -E systemctl daemon-reload 
