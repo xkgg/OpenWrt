@@ -1248,19 +1248,14 @@ jobs:
           body_path: ${{ env.UPLOAD_ROOT_PATH }}/release.txt
 
 
-#      - name: 删除旧的 Workflows
-#        uses: Mattraks/delete-workflow-runs@main
-#        with:
-#          token: ${{ github.token }}
-#          repository: ${{ github.repository }}
-#          retain_days: 1
-#          keep_minimum_runs: 3
-
-      - name: Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
+      - name: 删除旧的 Workflows
+        uses: Mattraks/delete-workflow-runs@v2
         with:
-          retain_days: 0
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 1
           keep_minimum_runs: 3
+
 
       - name: 删除旧的Releases
         uses: dev-drprasad/delete-older-releases@master
