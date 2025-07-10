@@ -13,7 +13,7 @@ jobs:
 #      contents: read
     steps:
       - name: Delete old runs
-        uses: c-hive/gha-remove-workflow-runs@v1.4.0
+        uses: c-hive/gha-remove-workflow-runs@master
         with:
           repo: xkgg/OpenWrt
 #          token: ${{ secrets.REPO_TOKEN }}
