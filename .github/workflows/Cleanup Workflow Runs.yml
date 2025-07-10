@@ -23,7 +23,9 @@ jobs:
 #      if: env.SSH_ACTION == 'true'
           if: (github.event.inputs.SSH_ACTION == 'true' && github.event.inputs.SSH_ACTION  != 'false') || contains(github.event.action, 'SSH_ACTION')
 #          uses: danshui-git/debugger-action@main
-          uses: 281677160/common@need
+          uses: mxschmitt/action-tmate@v3
+          with:
+             limit-access-to-actor: false
           
         - name: Delete old runs
           uses: Mattraks/delete-workflow-runs@v2
