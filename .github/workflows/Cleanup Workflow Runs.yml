@@ -22,7 +22,8 @@ jobs:
         - name: SSH远程连接（make menuconfig）
 #      if: env.SSH_ACTION == 'true'
           if: (github.event.inputs.SSH_ACTION == 'true' && github.event.inputs.SSH_ACTION  != 'false') || contains(github.event.action, 'SSH_ACTION')
-          uses: danshui-git/debugger-action@main
+#          uses: danshui-git/debugger-action@main
+          uses: 281677160/common@need
           
         - name: Delete old runs
           uses: Mattraks/delete-workflow-runs@v2
