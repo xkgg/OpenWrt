@@ -13,12 +13,14 @@ jobs:
 #      contents: read
     steps:
       - name: Delete old runs
-        uses: GitRML/delete-workflow-runs@main
+        uses: c-hive/gha-remove-workflow-runs@v2
         with:
-          token: ${{ secrets.REPO_TOKEN }}
-          retain_days: 0
-          keep_minimum_runs: 3
-          repository: xkgg/OpenWrt
-          status: completed  # 只删除已完成的工作流
+          repo: xkgg/OpenWrt
+#          token: ${{ secrets.REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          keep_days: 0
+          keep_minimum: 3
+          workflow_run_status: completed
+          preserve_artifacts: false
 
 
