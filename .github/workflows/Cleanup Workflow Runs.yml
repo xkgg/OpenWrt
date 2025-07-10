@@ -15,9 +15,9 @@ jobs:
       - name: Delete old runs
         uses: GitRML/delete-workflow-runs@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_TOKEN }}
           retain_days: 0
           keep_minimum_runs: 3
-          status: completed  # 只删除已完成的工作流
+#          status: completed  # 只删除已完成的工作流
 
 
