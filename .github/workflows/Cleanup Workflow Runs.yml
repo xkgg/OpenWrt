@@ -4,6 +4,12 @@ on:
    workflow_dispatch:
 #  schedule:
 #     - cron: '0 0 * * *'  # 每天运行
+    inputs:
+      SSH_ACTION:
+        description: 'SSH远程配置固件'
+        required: false
+        default: 'false'
+        type: boolean
 
 jobs:
   cleanup:
@@ -12,14 +18,20 @@ jobs:
 #      actions: write  # 关键权限
 #      contents: read
     steps:
-      - name: Delete old runs
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-#          token: ${{ secrets.REPO_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }} #工作流程运行所在的存储库的名称
-          retain_days: 0 #用于与每个工作流的保留天数进行比较的天数
-          keep_minimum_runs: 3 #每个工作流程要保留的最小运行数
+    
+        - name: SSH远程连接（make menuconfig）
+#      if: env.SSH_ACTION == 'true'
+          if: (github.event.inputs.SSH_ACTION == 'true' && github.event.inputs.SSH_ACTION  != 'false') || contains(github.event.action, 'SSH_ACTION')
+          uses: danshui-git/debugger-action@main
+          
+        - name: Delete old runs
+          uses: Mattraks/delete-workflow-runs@v2
+          with:
+#            token: ${{ secrets.REPO_TOKEN }}
+            token: ${{ secrets.GITHUB_TOKEN }}
+            repository: ${{ github.repository }} #工作流程运行所在的存储库的名称
+            retain_days: 0 #用于与每个工作流的保留天数进行比较的天数
+            keep_minimum_runs: 3 #每个工作流程要保留的最小运行数
 
 
 
