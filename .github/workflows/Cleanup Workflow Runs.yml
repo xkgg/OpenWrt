@@ -1,0 +1,21 @@
+name: Cleanup Workflow Runs
+
+on:
+   workflow_dispatch:
+#  schedule:
+#     - cron: '0 0 * * *'  # 每天运行
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write  # 关键权限
+      contents: read
+    steps:
+      - name: Delete old runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: 0
+          keep_minimum_runs: 3
+          repository: xkgg/OpenWrt
