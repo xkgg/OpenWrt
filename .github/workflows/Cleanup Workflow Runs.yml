@@ -24,8 +24,10 @@ jobs:
           if: (github.event.inputs.SSH_ACTION == 'true' && github.event.inputs.SSH_ACTION  != 'false') || contains(github.event.action, 'SSH_ACTION')
 #          uses: danshui-git/debugger-action@main
           uses: mxschmitt/action-tmate@v3
+          timeout-minutes: 15 #15分钟超时
           with:
              limit-access-to-actor: false
+             
           
         - name: Delete old runs
           uses: Mattraks/delete-workflow-runs@v2
