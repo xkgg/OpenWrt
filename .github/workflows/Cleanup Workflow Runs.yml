@@ -18,6 +18,7 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           retain_days: 0
           keep_minimum_runs: 3
-#          status: completed  # 只删除已完成的工作流
+          repository: xkgg/OpenWrt
+          status: completed  # 只删除已完成的工作流
 
 
