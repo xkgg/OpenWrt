@@ -17,8 +17,9 @@ jobs:
         with:
 #          token: ${{ secrets.REPO_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          retain_days: 0
-          keep_minimum_runs: 3
+          repository: ${{ github.repository }} #工作流程运行所在的存储库的名称
+          retain_days: 0 #用于与每个工作流的保留天数进行比较的天数
+          keep_minimum_runs: 3 #每个工作流程要保留的最小运行数
 
 
 
