@@ -14,6 +14,9 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
 #    permissions:
 #      actions: write  # 关键权限
 #      contents: read
