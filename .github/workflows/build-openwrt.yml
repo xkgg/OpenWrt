@@ -1151,7 +1151,8 @@ jobs:
     runs-on: ubuntu-22.04
     permissions:
       actions: write
-      contents: read
+      contents: write
+
     steps:
       - name: 将存储库签出到运行器
         uses: actions/checkout@v4
