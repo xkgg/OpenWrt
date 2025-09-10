@@ -341,7 +341,7 @@ jobs:
           sed -i "s/"$'\t'"--set=llvm.download-ci-llvm=true /"$'\t'"--set=llvm.download-ci-llvm=false /g" "$MAKEFILE_PATH"
           ##删除golang替换
           rm -rf $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
-          git clone https://github.com/sbwml/packages_lang_golang -b 24.x $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
+          git clone https://github.com/sbwml/packages_lang_golang -b 25.x $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
           ##修改ttyd到系统菜单
           sed -i 's/services/system/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
           ##修改samba4到NAS菜单
