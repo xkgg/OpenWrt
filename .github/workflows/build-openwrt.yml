@@ -724,34 +724,7 @@ jobs:
           cat build1_ENV
           cat build1_ENV >> $GITHUB_ENV
           
-      - name: 修复 nft-fullcone 兼容性错误
-        working-directory: ${{ env.OPENWRT_ROOT_PATH }}
-        run: |
-          # 定义文件路径
-          FILE_PATH="package/cmzj_package/nft-fullcone/nft_ext_fullcone.c"
-          
-          # 检查文件是否存在
-          if [ ! -f "$FILE_PATH" ]; then
-            echo "错误: 无法找到文件 $FILE_PATH"
-            echo "请检查路径是否正确，或者包名是否变更。"
-            exit 1
-          fi
-          
-          echo "正在修复 $FILE_PATH ..."
-          
-          # 使用 sed 修改函数定义，移除 'const struct nft_data **args' 参数
-          # 这会匹配包含 'const struct nft_data **' 的函数参数行，并将其删除
-          sed -i '/const struct nft_data \*\*/,/)/ s/const struct nft_data \*\*args,//' "$FILE_PATH"
-          
-          # 为了确保兼容性，如果上面的命令不生效（例如参数名不是 args），直接按行匹配并删除包含该类型的行
-          sed -i '/const struct nft_data \*\*\s*[^,)]*/d' "$FILE_PATH"
-          
-          # 简单的验证：检查是否还有旧的参数签名
-          if grep -q "const struct nft_data \*\*" "$FILE_PATH"; then
-            echo "警告: 检测到可能未完全修复的代码残留，请检查 $FILE_PATH 中的 nft_fullcone_validate 函数。"
-          else
-            echo "修复完成。"
-          fi
+
       - name: 环境变量
         run: env
 
