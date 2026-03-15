@@ -254,12 +254,12 @@ jobs:
           cat $GITHUB_ENV >> $GITHUB_WORKSPACE/build1_ENV
 
       - name: 下载cmzj_package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: cmzj_package-${{ matrix.config }}
 
       - name: 下载cmzj_patch
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: cmzj_patch-${{ matrix.config }}
 
@@ -712,7 +712,7 @@ jobs:
           bash $GITHUB_WORKSPACE/scripts/merge_disk.sh
 
       - name: 下载build1_WORKSPACE
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build1_WORKSPACE-${{ matrix.config }}
 
@@ -818,7 +818,7 @@ jobs:
           bash $GITHUB_WORKSPACE/scripts/merge_disk.sh
 
       - name: 下载build1_WORKSPACE
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build1_WORKSPACE-${{ matrix.config }}
 
@@ -1007,23 +1007,23 @@ jobs:
         uses: actions/checkout@v5
 
       - name: 下载Image Builder
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: OpenWrt-Image_Builder-${{ matrix.config }}
 
       - name: 下载包
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: OpenWrt-package-${{ matrix.config }}
           path: ${{ github.workspace }}/package/
 
       - name: 下载build1配置文件
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build1_openwrt_config-${{ matrix.config }}
 
       - name: 下载 files
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build1_openwrt_files-${{ matrix.config }}
 
@@ -1162,19 +1162,19 @@ jobs:
           echo "RELEASE_TAG_NAME=$RELEASE_TAG_NAME" >> $GITHUB_ENV
 
       - name: 下载固件
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: OpenWrt-firmware-${{ matrix.config }}
           path: ${{ env.UPLOAD_ROOT_PATH }}
 
       - name: 下载包
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: OpenWrt-package-${{ matrix.config }}
           path: ${{ env.UPLOAD_ROOT_PATH }}/package
 
       - name: 下载内核模块
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: OpenWrt-kmod-${{ matrix.config }}
           path: ${{ env.UPLOAD_ROOT_PATH }}/kmod
