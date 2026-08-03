@@ -1213,7 +1213,7 @@ jobs:
 
       - name: 上传固件到 Release
         id: firmware-release
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@v3
         with:
           name: ${{ env.RELEASE_NAME }}
           tag_name: ${{ env.RELEASE_TAG_NAME }}
