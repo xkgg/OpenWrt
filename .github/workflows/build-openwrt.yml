@@ -1231,11 +1231,11 @@ jobs:
           retain_days: 1
           keep_minimum_runs: 3
 
-
+          
       - name: 删除旧的Releases
-        uses: dev-drprasad/delete-older-releases@master
+        uses: ophub/delete-releases-workflows@main
         with:
-          keep_latest: 5
+          releases_keep_latest: 5
           delete_tags: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
+          
