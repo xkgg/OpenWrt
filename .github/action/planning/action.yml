@@ -43,6 +43,7 @@ runs:
         }
 
         TMPFILE=$(mktemp)
+        RELEASES_TMP=$(mktemp)
         export parameter=matrix={\'include\':[ 
         NEED_FULL_RESOLVE=0
 
@@ -125,7 +126,7 @@ runs:
             # 在临时 openwrt 目录解析
             cd "$OPENWRT_TMP_DIR"
             git fetch --depth=1 origin "$OPENWRT_TAG_BRANCH" || true
-            git checkout -f "$OPENWRT_TAG_BRANCH" || true
+            git checkout -f "$OPENWRT_TAG_BRANCH" 2>/dev/null || git checkout -f FETCH_HEAD 2>/dev/null || true
             # 将 target.config (如果存在) 追加到 .config 并运行 make defconfig
             cat $GITHUB_WORKSPACE/config/$cfg/target.config >> .config || true
             make defconfig >/dev/null 2>&1 || true
@@ -133,13 +134,14 @@ runs:
             sub=$(sed -n '/^CONFIG_TARGET_SUBTARGET/p' .config | sed -e 's/CONFIG_TARGET_SUBTARGET\="//' -e 's/"//') || true
             archpkgs=$(sed -n '/^CONFIG_TARGET_ARCH_PACKAGES/p' .config | sed -e 's/CONFIG_TARGET_ARCH_PACKAGES\="//' -e 's/"//') || true
             # 清理 .config 以便下一个 config 使用干净环境
-            git checkout -- .config || true
+            [ -f .config ] && git checkout -- .config >/dev/null 2>&1 || true
           fi
 
           export parameter=$parameter\{\'config\':\'$cfg\',\'target\':\'$tgt\',\'subtarget\':\'$sub\',\'targetarchpackages\':\'$archpkgs\'\},
           echo "::notice ::配置$cfg 的Release名:OpenWrt-$starttime-$tgt-$sub_$OPENWRT_TAG_BRANCH"
           echo "::notice ::配置$cfg 编译的架构为$tgt,子架构为$sub,软件包目标架构为:$archpkgs"
-          echo "$starttime_$tgt-$sub_$OPENWRT_TAG_BRANCH" >> $TMPFILE
+          # 保存生成的 Release 名到单独的文件，避免污染 TMPFILE 的解析行格式
+          echo "$starttime_$tgt-$sub_$OPENWRT_TAG_BRANCH" >> $RELEASES_TMP
 
         done < $TMPFILE
 
@@ -151,7 +153,7 @@ runs:
         export parameter=$parameter]
         export parameter=$(echo $parameter|sed "s/},]/}]/g")
         # 检查是否会生成重名 Release
-        if sort $TMPFILE | uniq -d | grep -q . ; then
+        if sort $RELEASES_TMP | uniq -d | grep -q . ; then
           echo "::error ::配置会生成重名的Release"
           exit 1
         fi
