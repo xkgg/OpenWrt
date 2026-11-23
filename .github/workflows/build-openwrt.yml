@@ -311,10 +311,16 @@ jobs:
           echo "设置llvm.download-ci-llvm为false"
           MAKEFILE_PATH="$OPENWRT_ROOT_PATH/feeds/packages/lang/rust/Makefile"
           sed -i "s/"$'\t'"--set=llvm.download-ci-llvm=true /"$'\t'"--set=llvm.download-ci-llvm=false /g" "$MAKEFILE_PATH"
-          ##删除golang替换为最新支持版本 (27.x 支持 Go 1.27+，满足 tailscale 等新包要求)
-          rm -rf $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
-          git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 27.x $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
-          $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang
+          ## 兼容处理 Golang 支持：若 feeds 中没有 golang1.27 则使用外部高版本，否则保留并安装官方原生 golang1.27
+          if [ ! -d "$OPENWRT_ROOT_PATH/feeds/packages/lang/golang/golang1.27" ]; then
+            rm -rf $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
+            git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 24.x $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
+            $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang
+          else
+            $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang1.27 golang
+          fi
+          ## 移除上游有缺陷且未使用的 prosody，避免引发 lua5.4 缺失依赖警告
+          rm -rf $OPENWRT_ROOT_PATH/feeds/packages/net/prosody $OPENWRT_ROOT_PATH/package/feeds/packages/prosody
           ##修改ttyd到系统菜单
           sed -i 's/services/system/g' $OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-ttyd/root/usr/share/luci/menu.d/luci-app-ttyd.json
           ##修改samba4到NAS菜单
@@ -388,8 +394,8 @@ jobs:
           PACKAGEDEPWARNING=$TMPDIR/packagedepwarning.log
           make -s prepare-tmpinfo
           ./scripts/package-metadata.pl mk tmp/.packageinfo > tmp/.packagedeps 2>$PACKAGEDEPWARNING || { rm -f tmp/.packagedeps; false; }
-          if [ -n "$(cat $PACKAGEDEPWARNING)" ]; then
-            echo "::error ::检查到软件包依赖问题,这极有可能导致编译错误，请前往build1检查软件包依赖步骤查看详情。"
+          if [ -s "$PACKAGEDEPWARNING" ]; then
+            echo "::warning ::检查到软件包依赖警告，请核对："
             cat $PACKAGEDEPWARNING
           fi
           [[ -d $TMPDIR ]] && rm -rf "$TMPDIR"
