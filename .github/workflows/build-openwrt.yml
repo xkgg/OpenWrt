@@ -317,7 +317,7 @@ jobs:
             git clone --depth=1 https://github.com/sbwml/packages_lang_golang -b 24.x $OPENWRT_ROOT_PATH/feeds/packages/lang/golang
             $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang
           else
-            $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang1.27 golang
+            $OPENWRT_ROOT_PATH/scripts/feeds install -f -p packages golang1.27 golang golang-bootstrap
           fi
           ## 移除上游有缺陷且未使用的 prosody，避免引发 lua5.4 缺失依赖警告
           rm -rf $OPENWRT_ROOT_PATH/feeds/packages/net/prosody $OPENWRT_ROOT_PATH/package/feeds/packages/prosody
