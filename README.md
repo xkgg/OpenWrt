@@ -74,7 +74,6 @@
 
 感谢以下开源项目与各位开发者的贡献：
 
-- [郭子杰 (zijieKwok)](https://github.com/zijieKwok/OpenWrt)
 - [沉默の金 (chenmozhijin)](https://github.com/chenmozhijin/OpenWrt-K)
 - [OpenWrt 官方项目](https://github.com/openwrt/openwrt/)
 - [iStoreOS](https://github.com/istoreos/istoreos)
