@@ -353,6 +353,17 @@ jobs:
           mv $WORKINGDIR/openwrt-smartdns-master/* $WORKINGDIR/
           rmdir $WORKINGDIR/openwrt-smartdns-master
           rm $WORKINGDIR/master.zip
+          # 切换 smartdns 源码源到 PikuZheng/smartdns
+          PIKU_SMARTDNS_COMMIT=$(git ls-remote https://github.com/PikuZheng/smartdns.git refs/heads/master | awk '{print $1}')
+          if [ -z "$PIKU_SMARTDNS_COMMIT" ]; then
+            echo "::error ::无法获取 PikuZheng/smartdns 的最新提交"
+            exit 1
+          fi
+          echo "::notice ::使用 PikuZheng/smartdns 源码，提交：$PIKU_SMARTDNS_COMMIT"
+          sed -i "s|^PKG_SOURCE_URL:=.*|PKG_SOURCE_URL:=https://codeload.github.com/PikuZheng/smartdns/tar.gz|" $WORKINGDIR/Makefile
+          sed -i "s|^PKG_SOURCE_VERSION:=.*|PKG_SOURCE_VERSION:=$PIKU_SMARTDNS_COMMIT|" $WORKINGDIR/Makefile
+          sed -i "s|^PKG_HASH:=.*|PKG_HASH:=skip|" $WORKINGDIR/Makefile
+          grep -E "^PKG_SOURCE_URL:|^PKG_SOURCE_VERSION:|^PKG_HASH:" $WORKINGDIR/Makefile
           LUCIBRANCH="master"
           WORKINGDIR="$OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-smartdns"
           mkdir $WORKINGDIR -p
