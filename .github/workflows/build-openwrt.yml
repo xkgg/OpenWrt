@@ -1056,9 +1056,26 @@ jobs:
           cd $GITHUB_WORKSPACE/package/
           rm -rf kernel_*
           cp -n $GITHUB_WORKSPACE/package/* $IMAGE_BUILDER_ROOT_PATH/packages/ 2>/dev/null || true
+          # 修复 apk 缺失 repositories 报错
+          touch $IMAGE_BUILDER_ROOT_PATH/repositories 2>/dev/null || true
+          # 修复 openssl.cnf 警告
+          mkdir -p $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl
+          ln -sf /etc/ssl/openssl.cnf $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf 2>/dev/null || touch $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf
+          echo "OPENSSL_CONF=/etc/ssl/openssl.cnf" >> $GITHUB_ENV
 
       - name: 制作包列表
-        run: sed -n "/^CONFIG_PACKAGE_[-a-zA-Z0-9]\{1,99\}=y$/p" build1.config | sed -e "s/CONFIG_PACKAGE_//g" -e "s/=y//g" | sed ':label;N;s/\n/ /;b label' > package.list
+        run: |
+          raw_pkgs=$(sed -n "/^CONFIG_PACKAGE_[-a-zA-Z0-9]\{1,99\}=y$/p" build1.config | sed -e "s/CONFIG_PACKAGE_//g" -e "s/=y//g")
+          valid_pkgs=""
+          for pkg in $raw_pkgs; do
+            if ls $IMAGE_BUILDER_ROOT_PATH/packages/${pkg}-* $IMAGE_BUILDER_ROOT_PATH/packages/${pkg}_* >/dev/null 2>&1; then
+              valid_pkgs="$valid_pkgs $pkg"
+            else
+              echo "::warning ::软件包 $pkg 未在 packages 目录中找到，已跳过安装"
+            fi
+          done
+          echo $valid_pkgs > package.list
+          echo "最终安装软件包数量: $(wc -w < package.list)"
 
       - name: 覆盖配置文件
         run: |
