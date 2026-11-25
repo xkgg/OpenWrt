@@ -1069,10 +1069,14 @@ jobs:
           cp -n $GITHUB_WORKSPACE/package/* $IMAGE_BUILDER_ROOT_PATH/packages/ 2>/dev/null || true
           # 确保不存在空的 repositories 文件（空 repositories 会导致 apk 读取到 0 个软件源从而丢失所有基础包）
           rm -f $IMAGE_BUILDER_ROOT_PATH/repositories
-          # 修复 openssl.cnf 警告
-          mkdir -p $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl
-          ln -sf /etc/ssl/openssl.cnf $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf 2>/dev/null || touch $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf
-          echo "OPENSSL_CONF=/etc/ssl/openssl.cnf" >> $GITHUB_ENV
+          # 修复 openssl.cnf 警告（创建独立的空配置文件，避免引入宿主机 OpenSSL 3.x 的 providers 配置导致 ImageBuilder OpenSSL 1.1 初始化崩溃）
+          mkdir -p $IMAGE_BUILDER_ROOT_PATH/staging_dir/host/etc/ssl $IMAGE_BUILDER_ROOT_PATH/staging_dir/host/ssl
+          mkdir -p $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/ssl
+          touch $IMAGE_BUILDER_ROOT_PATH/staging_dir/host/etc/ssl/openssl.cnf
+          touch $IMAGE_BUILDER_ROOT_PATH/staging_dir/host/ssl/openssl.cnf
+          touch $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf
+          touch $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/ssl/openssl.cnf
+          echo "OPENSSL_CONF=$IMAGE_BUILDER_ROOT_PATH/staging_dir/host/etc/ssl/openssl.cnf" >> $GITHUB_ENV
 
       - name: 制作包列表
         run: |
