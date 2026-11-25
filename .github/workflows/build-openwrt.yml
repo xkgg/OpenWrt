@@ -1276,18 +1276,18 @@ jobs:
 
 
       - name: 删除旧的 Workflows
-        uses: Mattraks/delete-workflow-runs@v2
+        uses: Mattraks/delete-workflow-runs@v2.1.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           retain_days: 1
           keep_minimum_runs: 3
 
-          
-      - name: 删除旧的Releases
-        uses: ophub/delete-releases-workflows@main
+      - name: 删除旧的 Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
-          releases_keep_latest: 5
+          repo: ${{ github.repository }}
+          keep_latest: 4
           delete_tags: true
-          gh_token: ${{ secrets.GITHUB_TOKEN }}
-          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
