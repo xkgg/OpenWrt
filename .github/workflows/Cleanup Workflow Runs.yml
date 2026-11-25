@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       actions: write
-      contents: read
+      contents: write
 
     steps:
       - name: SSH 远程调试
@@ -33,3 +33,12 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: 0
           keep_minimum_runs: 3
+
+      - name: 清理旧 Releases 及关联 Tag
+        uses: dev-drprasad/delete-older-releases@v0.3.4
+        with:
+          repo: ${{ github.repository }}
+          keep_latest: 3
+          delete_tags: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
