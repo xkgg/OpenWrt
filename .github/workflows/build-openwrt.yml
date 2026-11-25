@@ -1067,8 +1067,8 @@ jobs:
           cd $GITHUB_WORKSPACE/package/
           rm -rf kernel_*
           cp -n $GITHUB_WORKSPACE/package/* $IMAGE_BUILDER_ROOT_PATH/packages/ 2>/dev/null || true
-          # 修复 apk 缺失 repositories 报错
-          touch $IMAGE_BUILDER_ROOT_PATH/repositories 2>/dev/null || true
+          # 确保不存在空的 repositories 文件（空 repositories 会导致 apk 读取到 0 个软件源从而丢失所有基础包）
+          rm -f $IMAGE_BUILDER_ROOT_PATH/repositories
           # 修复 openssl.cnf 警告
           mkdir -p $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl
           ln -sf /etc/ssl/openssl.cnf $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf 2>/dev/null || touch $GITHUB_WORKSPACE/workspace/openwrt/staging_dir/host/etc/ssl/openssl.cnf
@@ -1076,6 +1076,7 @@ jobs:
 
       - name: 制作包列表
         run: |
+          echo "packages 目录下共有 $(ls -1 $IMAGE_BUILDER_ROOT_PATH/packages/*.apk 2>/dev/null | wc -l) 个 apk 文件"
           raw_pkgs=$(sed -n "/^CONFIG_PACKAGE_[-a-zA-Z0-9]\{1,99\}=y$/p" build1.config | sed -e "s/CONFIG_PACKAGE_//g" -e "s/=y//g")
           valid_pkgs=""
           for pkg in $raw_pkgs; do
