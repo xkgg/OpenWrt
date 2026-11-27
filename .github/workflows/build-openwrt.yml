@@ -343,7 +343,7 @@ jobs:
           echo -e "\nmsgid \"IPv4-Address\"" >> $OPENWRT_ROOT_PATH/feeds/luci/modules/luci-base/po/zh_Hans/base.po
           echo -e "msgstr \"IPv4地址\"" >> $OPENWRT_ROOT_PATH/feeds/luci/modules/luci-base/po/zh_Hans/base.po
           curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
-      - name: 更新smartdns、netdata
+      - name: 更新smartdns、netdata、frp
         run: |
           WORKINGDIR="$OPENWRT_ROOT_PATH/feeds/packages/net/smartdns"
           mkdir $WORKINGDIR -p
@@ -377,6 +377,29 @@ jobs:
           mkdir $WORKINGDIR -p
           rm $WORKINGDIR/* -fr
           cp -RT $CMZJ_PATCH_ROOT_PATH/netdata $WORKINGDIR
+          # 更新 frp (frpc / frps) 及配套 LuCI 至最新版本
+          TMP_FRP_DIR=$(mktemp -d)
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/openwrt/packages.git "$TMP_FRP_DIR/packages"
+          git -C "$TMP_FRP_DIR/packages" sparse-checkout set net/frp
+          rm -rf "$OPENWRT_ROOT_PATH/feeds/packages/net/frp"
+          cp -RT "$TMP_FRP_DIR/packages/net/frp" "$OPENWRT_ROOT_PATH/feeds/packages/net/frp"
+          FRP_LATEST_VER=$(git ls-remote --tags --refs --sort="-v:refname" https://github.com/fatedier/frp.git 'v[0-9]*.[0-9]*.[0-9]*' | grep -E 'refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 | sed 's|.*refs/tags/v||')
+          FRP_FEED_VER=$(sed -n 's/^PKG_VERSION:=//p' "$OPENWRT_ROOT_PATH/feeds/packages/net/frp/Makefile")
+          if [ -n "$FRP_LATEST_VER" ] && [ "$FRP_LATEST_VER" != "$FRP_FEED_VER" ]; then
+            echo "::notice ::更新 frp 至最新版本 v$FRP_LATEST_VER（原 feed 版本：$FRP_FEED_VER）"
+            sed -i "s|^PKG_VERSION:=.*|PKG_VERSION:=$FRP_LATEST_VER|" "$OPENWRT_ROOT_PATH/feeds/packages/net/frp/Makefile"
+            sed -i "s|^PKG_RELEASE:=.*|PKG_RELEASE:=1|" "$OPENWRT_ROOT_PATH/feeds/packages/net/frp/Makefile"
+            sed -i "s|^PKG_HASH:=.*|PKG_HASH:=skip|" "$OPENWRT_ROOT_PATH/feeds/packages/net/frp/Makefile"
+          else
+            echo "::notice ::使用 openwrt/packages 最新 frp 版本：$FRP_FEED_VER"
+          fi
+          git clone --depth=1 --filter=blob:none --sparse https://github.com/openwrt/luci.git "$TMP_FRP_DIR/luci"
+          git -C "$TMP_FRP_DIR/luci" sparse-checkout set applications/luci-app-frpc applications/luci-app-frps
+          rm -rf "$OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-frpc" "$OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-frps"
+          cp -RT "$TMP_FRP_DIR/luci/applications/luci-app-frpc" "$OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-frpc"
+          cp -RT "$TMP_FRP_DIR/luci/applications/luci-app-frps" "$OPENWRT_ROOT_PATH/feeds/luci/applications/luci-app-frps"
+          rm -rf "$TMP_FRP_DIR"
+          (cd "$OPENWRT_ROOT_PATH" && ./scripts/feeds update -i)
 
       - name: 安装 feeds
         working-directory: ${{ env.OPENWRT_ROOT_PATH }}
